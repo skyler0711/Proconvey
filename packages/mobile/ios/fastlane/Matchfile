@@ -1,0 +1,10 @@
+s3_bucket("preconvey-secure-assets")
+s3_region("eu-west-2")
+
+storage_mode("s3")
+
+type("development") # The default type, can be: appstore, adhoc, enterprise or development
+
+app_identifier('uk.co.proconvey.mobile')
+username("curtis@coreblue.com")
+team_id("XWKPX2H36G")

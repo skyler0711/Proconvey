@@ -1,0 +1,144 @@
+type User {
+  id: ID!
+  first_name: String
+  middle_name: String
+  last_name: String
+  email: String!
+  role: UserRole!
+  job_role: String
+  occupation: String
+  job_bio: String
+  title: String
+  phone: String
+  suffix: String
+  sra_clc_number: String
+  invite_code_sent_at: String
+  conveyancer: Conveyancer @belongsTo(relation: "conveyancer")
+  invite_code: String
+  invite_code_sent_at: DateTime
+  profile_image: Media @with(relation: "media")
+  unread_notifications: [Notification!]! @rename(attribute: "newNotifications")
+  address: Address @morphOne(relation: "address")
+  properties: [Property!]! @belongsToMany(relation: "properties")
+  invite_code: String
+  invite_code_sent_at: DateTime
+  notification_preferences: NotificationPreferences @hasOne(relation: "notificationPreferences")
+  email_verified_at: DateTime
+  business_created_at: DateTime
+  pivot: PropertyUserPivot
+}
+
+type NotificationPreferences {
+  id: Int!
+  getting_started_forms_completed: Boolean!
+  onboarding_completed: Boolean!
+  client_new_document_uploads: Boolean!
+}
+
+input LoginInput @validator(class: "Auth\\LoginInputValidator") {
+  email: String!
+  password: String!
+}
+
+input ResetPasswordInput @validator(class: "Auth\\ResetPasswordInputValidator") {
+  token: String!
+  email: String!
+  password: String!
+  password_confirmation: String!
+}
+
+input InviteTeamMemberInput {
+  email: String!
+  job_role: String!
+}
+
+input InviteTeamMembersInput @validator(class: "Conveyancer\\InviteTeamMembersInputValidator") {
+  team_members: [InviteTeamMemberInput!]!
+}
+
+input RegisterInput @validator(class: "Auth\\RegisterInputValidator") {
+  email: String!
+  password: String!
+}
+
+input RegisterClientInput @validator(class: "Client\\RegisterClientInputValidator"){
+  email: String!
+  password: String!
+  user_id: ID!
+  invite_code: String!
+}
+
+input UpdateUserDetailsInput @validator(class: "Auth\\UpdateUserDetailsInputValidator") {
+  job_bio: String
+  job_role: String
+  profile_image: UploadFileInput
+  first_name: String!
+  last_name: String!
+  title: String!
+  suffix: String
+  phone: String!
+  sra_clc_number: String!
+}
+
+input UpdateClientDetailsInput @validator(class: "Auth\\UpdateClientDetailsInputValidator") {
+  first_name: String!
+  last_name: String!
+  title: String!
+  phone: String!
+  profile_image: UploadFileInput
+}
+
+input RegisterTeamMemberInput @validator(class: "Auth\\RegisterTeamMemberInputValidator") {
+  first_name: String!
+  last_name: String!
+  email: String!
+  password: String!
+  title: String!
+  suffix: String
+  phone: String!
+  invite_code: String
+  user_id: ID
+}
+
+input UpdateInvitedTeamMemberInput {
+  job_bio: String
+  profile_image: UploadFileInput
+}
+
+input UpdateUserProfileInput @validator(class: "Auth\\UpdateUserProfileInputValidator") {
+  first_name: String!
+  last_name: String!
+  email: String!
+  title: String
+  suffix: String
+  phone: String!
+  job_bio: String
+  job_role: String
+  password: String
+  newPassword: String
+  profile_image: UploadFileInput
+  sra_clc_number: String
+}
+
+extend type Query {
+  me: User @auth
+}
+
+extend type Mutation {
+  login(input: LoginInput! @spread): User! @field(resolver: "Auth\\Login")
+  logout: Boolean! @field(resolver: "Auth\\Logout")
+  register(input: RegisterInput! @spread): User! @field(resolver: "Auth\\Register")
+  updateUserDetails(input: UpdateUserDetailsInput! @spread): User! @field(resolver: "UpdateUserDetails")
+  updateClientDetails(input: UpdateClientDetailsInput! @spread): User! @field(resolver: "UpdateClientDetails")
+  forgottenPassword(email: String! @rules(apply: ["email", "required"]) ): Boolean @field(resolver: "Auth\\ForgottenPassword")
+  resetPassword(input: ResetPasswordInput! @spread): Boolean! @field(resolver: "Auth\\ResetPassword")
+  inviteTeamMember(input: InviteTeamMembersInput! @spread): Boolean! @field(resolver: "Auth\\InviteTeamMember")
+  registerTeamMember(input: RegisterTeamMemberInput! @spread): User! @field(resolver: "RegisterInvitedTeamMember")
+  updateInvitedTeamMember(input: UpdateInvitedTeamMemberInput! @spread): User! @field(resolver: "UpdateInvitedTeamMember")
+  updateUserProfile(input: UpdateUserProfileInput! @spread): User! @field(resolver: "Auth\\UpdateUserProfile")
+  deleteUser: Boolean! @field(resolver: "Auth\\DeleteUser")
+  deleteOtherUser(id: ID!): Boolean! @field(resolver: "Auth\\DeleteOtherUser") @can(ability: "delete", model: "User", injectArgs: id)
+  resendInvite(email: String! @rules(apply: ["email", "required"]) ): Boolean @field(resolver: "Auth\\ResendInvite")
+  registerClient(input: RegisterClientInput! @spread): User! @field(resolver: "Client\\UpdateRegisterClient")
+}
+

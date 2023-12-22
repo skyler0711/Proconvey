@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: GT Eesti Pro;
+  font-weight: 400;
+  src: url(../../ui/fonts/GTEestiProDisplay-Regular.woff2) format('woff2'),
+    url(../../ui/fonts/GTEestiProDisplay-Regular.woff) format('woff2');
+}
+
+@font-face {
+  font-family: GT Eesti Pro;
+  font-weight: 500;
+  src: url(../../ui/fonts/GTEestiProDisplay-Medium.woff2) format('woff2'),
+    url(../../ui/fonts/GTEestiProDisplay-Medium.woff) format('woff2');
+}
+
+@font-face {
+  font-family: GT Eesti Pro;
+  font-weight: 700;
+  src: url(../../ui/fonts/GTEestiProDisplay-Bold.woff2) format('woff2'),
+    url(../../ui/fonts/GTEestiProDisplay-Bold.woff) format('woff2');
+}
+
+/* For the CustomFooter Component, This is needed to align the text to the left */
+.align-child-left div {
+  justify-content: left !important;
+}
+
+#__next {
+  height: 100vh;
+}
+
+.payment-sub{
+  bottom: 0;
+}

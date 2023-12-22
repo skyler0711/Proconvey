@@ -1,0 +1,13 @@
+type PropTypes = {
+  className?: string,
+}
+
+const TickIcon = ({ className = 'w-6 h-6' }: PropTypes) => {
+  return (
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <path fillRule="evenodd" clipRule="evenodd" d="M13.4157 0.237133C13.745 0.558688 13.7513 1.08629 13.4297 1.41556L5.29169 9.74889C5.12771 9.91681 4.90053 10.0078 4.66597 9.99948C4.43142 9.99116 4.21124 9.88432 4.05956 9.70522L0.530918 5.53855C0.233484 5.18734 0.277081 4.66151 0.628295 4.36407C0.979508 4.06664 1.50534 4.11023 1.80278 4.46145L4.73936 7.92901L12.2373 0.251106C12.5589 -0.0781665 13.0865 -0.0844227 13.4157 0.237133Z" fill="currentColor" />
+    </svg>
+  )
+}
+
+export default TickIcon

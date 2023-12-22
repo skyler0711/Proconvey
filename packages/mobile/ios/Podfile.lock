@@ -1,0 +1,222 @@
+PODS:
+  - connectivity_plus (0.0.1):
+    - Flutter
+    - ReachabilitySwift
+  - Flutter (1.0.0)
+  - flutter_native_splash (0.0.1):
+    - Flutter
+  - GoogleDataTransport (9.2.1):
+    - GoogleUtilities/Environment (~> 7.7)
+    - nanopb (< 2.30910.0, >= 2.30908.0)
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleMLKit/BarcodeScanning (3.2.0):
+    - GoogleMLKit/MLKitCore
+    - MLKitBarcodeScanning (~> 2.2.0)
+  - GoogleMLKit/MLKitCore (3.2.0):
+    - MLKitCommon (~> 8.0.0)
+  - GoogleToolboxForMac/DebugUtils (2.3.2):
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - GoogleToolboxForMac/Defines (2.3.2)
+  - GoogleToolboxForMac/Logger (2.3.2):
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - "GoogleToolboxForMac/NSData+zlib (2.3.2)":
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+  - "GoogleToolboxForMac/NSDictionary+URLArguments (2.3.2)":
+    - GoogleToolboxForMac/DebugUtils (= 2.3.2)
+    - GoogleToolboxForMac/Defines (= 2.3.2)
+    - "GoogleToolboxForMac/NSString+URLArguments (= 2.3.2)"
+  - "GoogleToolboxForMac/NSString+URLArguments (2.3.2)"
+  - GoogleUtilities/Environment (7.11.0):
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.11.0):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/UserDefaults (7.11.0):
+    - GoogleUtilities/Logger
+  - GoogleUtilitiesComponents (1.1.0):
+    - GoogleUtilities/Logger
+  - GTMSessionFetcher/Core (1.7.2)
+  - MLImage (1.0.0-beta3)
+  - MLKitBarcodeScanning (2.2.0):
+    - MLKitCommon (~> 8.0)
+    - MLKitVision (~> 4.2)
+  - MLKitCommon (8.0.0):
+    - GoogleDataTransport (~> 9.0)
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - "GoogleToolboxForMac/NSDictionary+URLArguments (~> 2.1)"
+    - GoogleUtilities/UserDefaults (~> 7.0)
+    - GoogleUtilitiesComponents (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.12)
+  - MLKitVision (4.2.0):
+    - GoogleToolboxForMac/Logger (~> 2.1)
+    - "GoogleToolboxForMac/NSData+zlib (~> 2.1)"
+    - GTMSessionFetcher/Core (~> 1.1)
+    - MLImage (= 1.0.0-beta3)
+    - MLKitCommon (~> 8.0)
+    - Protobuf (~> 3.12)
+  - mobile_scanner (3.0.0):
+    - Flutter
+    - GoogleMLKit/BarcodeScanning (~> 3.2.0)
+  - nanopb (2.30909.0):
+    - nanopb/decode (= 2.30909.0)
+    - nanopb/encode (= 2.30909.0)
+  - nanopb/decode (2.30909.0)
+  - nanopb/encode (2.30909.0)
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - PPBlinkID (5.18.0)
+  - PromisesObjC (2.2.0)
+  - Protobuf (3.22.0)
+  - ReachabilitySwift (5.0.0)
+  - SwiftProtobuf (1.20.3)
+  - uni_links (0.0.1):
+    - Flutter
+  - YotiCommon (3.1.2)
+  - YotiDocumentCapture (3.1.2):
+    - PPBlinkID (= 5.18.0)
+    - YotiCommon (= 3.1.2)
+    - YotiFoundation (= 3.1.2)
+  - YotiFaceCapture (5.0.1)
+  - YotiFoundation (3.1.2)
+  - YotiNetwork (3.1.2)
+  - YotiSDKCommon (3.1.2):
+    - YotiCommon (= 3.1.2)
+    - YotiFoundation (= 3.1.2)
+    - YotiSDKNetwork (= 3.1.2)
+  - YotiSDKCore (3.1.2):
+    - YotiFoundation (= 3.1.2)
+    - YotiSDKCommon (= 3.1.2)
+    - YotiSDKDesign (= 3.1.2)
+    - YotiSDKNetwork (= 3.1.2)
+  - YotiSDKDesign (3.1.2):
+    - YotiCommon (= 3.1.2)
+    - YotiFoundation (= 3.1.2)
+    - YotiSDKCommon (= 3.1.2)
+  - YotiSDKDocument (3.1.2):
+    - SwiftProtobuf (= 1.20.3)
+    - YotiCommon (= 3.1.2)
+    - YotiDocumentCapture (= 3.1.2)
+    - YotiFoundation (= 3.1.2)
+    - YotiSDKCommon (= 3.1.2)
+    - YotiSDKCore (= 3.1.2)
+    - YotiSDKDesign (= 3.1.2)
+    - YotiSDKNetwork (= 3.1.2)
+  - YotiSDKFace (3.1.2):
+    - YotiSDKCommon (= 3.1.2)
+    - YotiSDKDesign (= 3.1.2)
+    - YotiSDKNetwork (= 3.1.2)
+  - YotiSDKFaceCapture (3.1.2):
+    - YotiFaceCapture (= 5.0.1)
+    - YotiSDKCommon (= 3.1.2)
+    - YotiSDKCore (= 3.1.2)
+    - YotiSDKDesign (= 3.1.2)
+    - YotiSDKFace (= 3.1.2)
+    - YotiSDKNetwork (= 3.1.2)
+  - YotiSDKFaceTec (3.1.2):
+    - YotiSDKCommon (= 3.1.2)
+    - YotiSDKCore (= 3.1.2)
+    - YotiSDKDesign (= 3.1.2)
+    - YotiSDKFace (= 3.1.2)
+    - YotiSDKNetwork (= 3.1.2)
+  - YotiSDKNetwork (3.1.2):
+    - YotiNetwork (= 3.1.2)
+
+DEPENDENCIES:
+  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
+  - mobile_scanner (from `.symlinks/plugins/mobile_scanner/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
+  - uni_links (from `.symlinks/plugins/uni_links/ios`)
+  - YotiSDKDocument
+  - YotiSDKFaceCapture
+  - YotiSDKFaceTec
+
+SPEC REPOS:
+  trunk:
+    - GoogleDataTransport
+    - GoogleMLKit
+    - GoogleToolboxForMac
+    - GoogleUtilities
+    - GoogleUtilitiesComponents
+    - GTMSessionFetcher
+    - MLImage
+    - MLKitBarcodeScanning
+    - MLKitCommon
+    - MLKitVision
+    - nanopb
+    - PPBlinkID
+    - PromisesObjC
+    - Protobuf
+    - ReachabilitySwift
+    - SwiftProtobuf
+    - YotiCommon
+    - YotiDocumentCapture
+    - YotiFaceCapture
+    - YotiFoundation
+    - YotiNetwork
+    - YotiSDKCommon
+    - YotiSDKCore
+    - YotiSDKDesign
+    - YotiSDKDocument
+    - YotiSDKFace
+    - YotiSDKFaceCapture
+    - YotiSDKFaceTec
+    - YotiSDKNetwork
+
+EXTERNAL SOURCES:
+  connectivity_plus:
+    :path: ".symlinks/plugins/connectivity_plus/ios"
+  Flutter:
+    :path: Flutter
+  flutter_native_splash:
+    :path: ".symlinks/plugins/flutter_native_splash/ios"
+  mobile_scanner:
+    :path: ".symlinks/plugins/mobile_scanner/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/ios"
+  uni_links:
+    :path: ".symlinks/plugins/uni_links/ios"
+
+SPEC CHECKSUMS:
+  connectivity_plus: 413a8857dd5d9f1c399a39130850d02fe0feaf7e
+  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
+  GoogleDataTransport: ea169759df570f4e37bdee1623ec32a7e64e67c4
+  GoogleMLKit: 0017a6a8372e1a182139b9def4d89be5d87ca5a7
+  GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
+  GoogleUtilities: c2bdc4cf2ce786c4d2e6b3bcfd599a25ca78f06f
+  GoogleUtilitiesComponents: 679b2c881db3b615a2777504623df6122dd20afe
+  GTMSessionFetcher: 5595ec75acf5be50814f81e9189490412bad82ba
+  MLImage: 489dfec109f21da8621b28d476401aaf7a0d4ff4
+  MLKitBarcodeScanning: d92fe1911001ec36870162c5a0eb206f612b7169
+  MLKitCommon: f6da6c5659618c070b50a80db01248ebe2964175
+  MLKitVision: 96c96571190b7f63eddf4a12068ce8a8689e0d2c
+  mobile_scanner: 004f7ad2fe4e2b5a3e6ed0bc4b83ca9c5b5dd975
+  nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
+  path_provider_foundation: c68054786f1b4f3343858c1e1d0caaded73f0be9
+  PPBlinkID: bcfa15f4a9cf34b0d9e85eb35ed96721bbd48c24
+  PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
+  Protobuf: 5e6cbc143d02fe08585d86b0098f8b755d2caaab
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  SwiftProtobuf: b02b5075dcf60c9f5f403000b3b0c202a11b6ae1
+  uni_links: d97da20c7701486ba192624d99bffaaffcfc298a
+  YotiCommon: 7d9e71a6fef92f9208c1c8d3faa06e2b7128b9a0
+  YotiDocumentCapture: 51576560938ed9fd80dfe3f0ffd0709aff9e1c1e
+  YotiFaceCapture: 0aace92ab70d391753e8db9396e1dfd83a652e3c
+  YotiFoundation: 360d834bb591c489a67f45da36e81161c85ef64d
+  YotiNetwork: 2c5692d7a5dc61bcb72d0f7c2b48737d4b14ca62
+  YotiSDKCommon: d5794d20426280fb105d68cf98751d9f5275c1de
+  YotiSDKCore: 1044c69068e916ef778db5fed1e9c28594b82e64
+  YotiSDKDesign: f87f399da475c904cf1f1b8327c192671b717f6d
+  YotiSDKDocument: a2727bb13f64386e7f6da96cba4b5ea4b5980acf
+  YotiSDKFace: 6a3452baad28e05aa3bdb006d6601b07c80b1433
+  YotiSDKFaceCapture: 40d5fe7121b3b925e21accd228d8c5309aa6107d
+  YotiSDKFaceTec: 0c23faac0982a968e2ac03eb2d550c8754a0d916
+  YotiSDKNetwork: 53cfabe365d00fc3f27b272a24c20e6d0e5414bc
+
+PODFILE CHECKSUM: 19498b959363b9ebe516a0f7efce49b5e28b055c
+
+COCOAPODS: 1.12.1

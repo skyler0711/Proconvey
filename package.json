@@ -1,0 +1,11 @@
+{
+  "name": "proconvey",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "yarn workspace @proconvey/app dev",
+    "storybook": "yarn workspace @proconvey/ui storybook"
+  }
+}

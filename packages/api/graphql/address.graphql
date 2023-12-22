@@ -1,0 +1,43 @@
+type Address {
+  id: ID!
+  line_1: String!
+  line_2: String
+  city: String!
+  postcode: String!
+}
+
+type InviteAddress {
+  id: ID!
+  line_1: String!
+  line_2: String
+  city: String!
+  postcode: String!
+  uprn: String!
+}
+
+input CreateAddressInput @validator(class: "Address\\CreateAddressInputValidator") {
+  line_1: String!
+  line_2: String
+  postcode: String!
+  city: String!
+}
+
+input CreateInviteAddressInput @validator(class: "Address\\CreateAddressInputValidator") {
+  line_1: String!
+  line_2: String
+  postcode: String!
+  city: String!
+  uprn: String!
+}
+
+input UpdateAddressInput @validator(class: "Address\\CreateAddressInputValidator") {
+  line_1: String!
+  line_2: String
+  postcode: String!
+  city: String!
+}
+
+extend type Mutation {
+  createAddress(input: CreateAddressInput!): Address @create
+  updateAddress(input: UpdateAddressInput!): Address @update
+}

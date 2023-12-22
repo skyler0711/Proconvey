@@ -1,0 +1,16 @@
+input GlobalSearchInput {
+  search: String
+  conveyancerId: Int
+}
+
+type SearchResult {
+  type: String
+  line_1: String
+  display_text: String
+  id: ID
+  users: [User!]!
+}
+
+extend type Query {
+  globalSearch(input: GlobalSearchInput!): [SearchResult!]! @field(resolver: "App\\GraphQL\\Queries\\GlobalSearch") @can(ability: "searchProperties", model: Property)
+}

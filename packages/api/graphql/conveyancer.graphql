@@ -1,0 +1,207 @@
+type ConveyancerSubscriptionPaymentMethod {
+  type: String!
+  brand: String
+  exp_month: Int
+  exp_year: Int
+  last4: String
+  sort_code: String
+}
+
+type ConveyancerSubscription {
+  plan_name: String
+  plan_price: Int
+  payment_method: ConveyancerSubscriptionPaymentMethod
+  billing_email: String
+}
+
+type Invoice {
+  plan_name: String!
+  number: String
+  amount: Int!
+  date: DateTime!
+  status: String!
+  pdf_url: String
+}
+
+type Conveyancer {
+  id: ID!
+  name: String!
+  type: String!
+  company_number: String
+  sra_clc_number: String!
+  trading_name: String
+  vat_number: String
+  website: String
+  location: String
+  telephone_number: String
+  email_address: String
+  logo_image: Media @with(relation: "media")
+  address: Address @morphTo
+  team_members: [User!] @hasMany(relation: "teamMembers")
+  team_member_count: Int! @count(relation: "teamMembers")
+  stripe_account_id: String
+  client_care_letter: String
+  client_care_letter_sale: String
+  client_care_letter_purchase: String
+  client_care_letter_remortgage: String
+  terms_and_conditions: String
+  letter_header: String
+  letter_footer: String
+  payment_on_account_amount: Int
+  subscription: ConveyancerSubscription @method(name: "getSubscription")
+  invoices(limit: Int!, starting_after: String): [Invoice!] @method(name: "getInvoices")
+  all_invoices_link: String! @field(resolver: "App\\GraphQL\\Queries\\AllInvoicesLink")
+}
+
+type OnboardingLetterPreview {
+  html: String!
+}
+
+input CreateConveyancerInput @validator(class: "Conveyancer\\CreateConveyancerInputValidator") {
+  name: String!
+  type: String!
+  company_number: String
+  sra_clc_number: String
+  trading_name: String
+  vat_number: String
+  website: String
+  location: String
+  telephone_number: String
+  email_address: String
+  logo_image: UploadFileInput
+  address: CreateAddressInput!
+}
+
+input UpdateConveyancerDetailsInput @validator(class: "Conveyancer\\UpdateConveyancerDetailsInputValidator") {
+  name: String!
+  company_number: String
+  sra_clc_number: String
+  logo_image: UploadFileInput
+  address: UpdateAddressInput
+  trading_name: String
+  vat_number: String
+  website: String
+  location: String
+  telephone_number: String
+  email_address: String
+}
+
+input AddNewPartyInput @validator(class: "Conveyancer\\AddNewPartyInputValidator") {
+  representation: String
+  representative_first_name: String
+  representative_last_name: String
+  representative_email: String
+  owner_first_name: String
+  owner_last_name: String
+  owner_email: String
+  first_name: String
+  last_name: String
+  email: String
+  party_type: String
+  owner_type: String
+  id_check: Boolean
+  client_care_letter: Boolean
+  client_id: ID
+}
+
+input UpdateExistingPartyInput @validator(class: "Conveyancer\\UpdateExistingPartyInputValidator") {
+  user_id: ID!
+  property_id: ID!
+  title: String
+  first_name: String
+  middle_name: String
+  last_name: String
+  email: String
+  phone: String
+  occupation: String
+  address: UpdateAddressInput
+  representation: String
+}
+
+input UpdateConveyancerInput @validator(class: "Conveyancer\\UpdateConveyancerInputValidator") {
+  client_care_letter: String
+  client_care_letter_sale: String
+  client_care_letter_purchase: String
+  client_care_letter_remortgage: String
+  terms_and_conditions: String
+  letter_header: String
+  letter_footer: String
+  payment_on_account_amount: Int
+}
+
+input PreviewOnboardingLetterInput @validator(class: "Conveyancer\\PreviewOnboardingLetterInputValidator") {
+  content: String!
+  header: String!
+  footer: String!
+}
+
+input UpdateStripeCodeInput @validator(class: "Conveyancer\\UpdateStripeCodeInputValidator") {
+  code: String!
+}
+
+input CreateSetupIntentInput @validator(class: "Conveyancer\\CreateSetupIntentInputValidator") {
+  email: String!
+  name: String!
+  card_number: Boolean
+  card_expiry_date: Boolean
+  card_cvv: Boolean
+  address: CreateAddressInput!
+}
+
+input RemovePartyInput {
+  party_id: ID!
+  property_id: ID!
+}
+
+input InvitePartyInput {
+  party_id: ID!
+  property_id: ID!
+}
+
+input RemoveGiftorInput {
+  giftor_id: ID!
+  property_id: ID!
+  step_id: ID!
+  giftor_index: String!
+  active_form_id: String!
+}
+
+input InviteGiftorInput {
+  party_id: ID!
+  property_id: ID!
+}
+
+input CompleteSetupIntentInput @validator(class: "Conveyancer\\CompleteSetupIntentInputValidator") {
+  payment_method: String!
+  email: String!
+}
+
+input UpdateBillingEmailInput @validator(class: "Conveyancer\\UpdateBillingEmailInputValidator") {
+  email: String!
+}
+
+input UpdateIDProviderInput @validator(class: "Conveyancer\\UpdateIDProviderInputValidator") {
+  provider: String!
+}
+
+extend type Query {
+  previewOnboardingLetter(input: PreviewOnboardingLetterInput! @spread): OnboardingLetterPreview! @field(resolver: "PreviewOnboardingLetter")
+}
+
+extend type Mutation {
+  createConveyancer(input: CreateConveyancerInput! @spread): Conveyancer! @field(resolver: "CreateConveyancer")
+  updateConveyancerDetails(input: UpdateConveyancerDetailsInput! @spread): Conveyancer @field(resolver: "Auth\\UpdateConveyancerDetails")
+  updateConveyancer(input: UpdateConveyancerInput! @spread): Conveyancer! @field(resolver: "UpdateConveyancer")
+  updateStripeCode(input: UpdateStripeCodeInput! @spread): Boolean! @field(resolver: "Conveyancer\\UpdateStripeCode")
+  updateIDProvider(input: UpdateIDProviderInput! @spread): Boolean! @field(resolver: "Conveyancer\\UpdateIDProvider")
+  disconnectStripe: Boolean! @field(resolver: "Conveyancer\\DisconnectStripe")
+  addNewParty(input: AddNewPartyInput! @spread): Boolean! @field(resolver: "Conveyancer\\AddNewParty")
+  updateExistingParty(input: UpdateExistingPartyInput! @spread): Boolean! @field(resolver: "Conveyancer\\UpdateExistingParty")
+  removeParty(input: RemovePartyInput!): Boolean! @field(resolver: "Conveyancer\\RemoveParty") @can(ability: "removeParty", model: "Conveyancer")
+  inviteParty(input: InvitePartyInput!): Boolean! @field(resolver: "Conveyancer\\InviteParty") @can(ability: "inviteParty", model: "Conveyancer")
+  removeGiftor(input: RemoveGiftorInput!): Boolean! @field(resolver: "Conveyancer\\RemoveGiftor") @can(ability: "removeGiftor", model: "Conveyancer")
+  inviteGiftor(input: InviteGiftorInput!): Boolean! @field(resolver: "Conveyancer\\InviteGiftor")
+  createSetupIntent(input: CreateSetupIntentInput! @spread): String! @field(resolver: "Conveyancer\\CreateSetupIntent")
+  completeSetupIntent(input: CompleteSetupIntentInput! @spread): Boolean! @field(resolver: "Conveyancer\\CompleteSetupIntent")
+  updateBillingEmail(input: UpdateBillingEmailInput! @spread): Boolean! @field(resolver: "Conveyancer\\UpdateBillingEmail") @can(ability: "updateBillingEmail", model: "Conveyancer")
+}

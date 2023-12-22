@@ -1,0 +1,58 @@
+opt_out_usage
+setup_ci
+skip_docs
+
+default_platform(:ios)
+
+app_store_connect_api_key(
+  key_id: ENV.fetch('APPLE_APP_DEVELOPER_KEY_ID'),
+  issuer_id: ENV.fetch('APPLE_APP_DEVELOPER_ISSUER_ID'),
+  key_filepath: '~/apple_key.p8'
+)
+
+desc 'Install Flutter'
+lane :bootstrap do
+  flutter_bootstrap(
+    flutter_channel: '3.7.3'
+  )
+end
+
+desc 'Generate files and build the project'
+lane :build do
+  match(type: 'appstore', app_identifier: 'uk.co.proconvey.mobile')
+
+  last_build_number = latest_testflight_build_number
+
+  output_file = flutter_build(
+    build: 'ipa',
+    build_number: last_build_number + 1,
+    build_args: [
+      '--verbose',
+      '--release',
+      '--dart-define=GRAPHQL_ENDPOINT=' + ENV.fetch('DEFINE_GRAPHQL_ENDPOINT')
+    ]
+  )
+  
+  xcode_export
+
+  ipa_file = find_ipa
+  ipa_file
+end
+
+desc 'Deploy to Testflight'
+lane :deploy do |options|
+  upload_to_testflight(
+    ipa: options[:path],
+    skip_waiting_for_build_processing: true
+  )
+end
+
+desc 'Build and deploy a full app'
+lane :build_and_deploy do
+  if is_ci?
+    bootstrap
+  end
+
+  ipa_path = build
+  deploy(path: ipa_path)
+end

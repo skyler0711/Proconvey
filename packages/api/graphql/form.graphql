@@ -1,0 +1,171 @@
+type Condition {
+  id: ID!
+  answer: Answer! @belongsTo
+  selected_value: String
+  type: ConditionType!
+}
+
+type Form {
+  id: ID!
+  name: String
+  group: FormGroup!
+  description: String!
+  order_number: Int
+  signed: Boolean
+  image: Media @with(relation: "media")
+  sections: [Section!]! @hasMany
+  repeatable_answer: Answer @belongsTo(relation: "repeatableAnswer")
+  conditions: [Condition!]! @hasMany
+  ta_form_template: FormType
+  pivot: ActiveFormsPivot
+}
+
+type Section {
+  id: ID!
+  name: String!
+  form: Form! @belongsTo
+  steps: [Step!]! @hasMany
+  conditions: [Condition!]! @hasMany
+}
+
+type Step {
+  id: ID!
+  question: String!
+  sub_heading: String
+  repeatable_answer: Answer @belongsTo(relation: "repeatableAnswer")
+  help_text: String
+  help_video_link: String
+  image: Media @with(relation: "media")
+  type: StepType!
+  compiled_answer: Mixed @field(resolver: "App\\GraphQL\\Resolvers\\CompiledAnswerResolver")
+  section: Section! @belongsTo
+  answers: [Answer!]! @hasMany
+  conditions: [Condition!]! @hasMany
+  provided_answers(property_id: ID!, active_form_id: ID!): [ProvidedAnswer] @field(resolver: "App\\GraphQL\\Resolvers\\StepProvidedAnswerResolver")
+}
+
+type AnswerDetailsSingleSelectOption {
+  value: String!
+}
+
+type AnswerDetailsSingleSelect {
+  label: String
+  options: [AnswerDetailsSingleSelectOption!]!
+}
+
+type AnswerDetailsText {
+  label: String
+  placeholder: String
+}
+
+type AnswerDetailsTextarea {
+  label: String
+  placeholder: String
+}
+
+type AnswerDetailsAddress {
+  label: String
+}
+
+type AnswerDetailsDropdownOption {
+  value: String!
+}
+
+type AnswerDetailsDropdown {
+  label: String
+  options: [AnswerDetailsDropdownOption!]!
+}
+
+type AnswerDetailsOwnerDropdownOption {
+  value: String!
+}
+
+type AnswerDetailsOwnerDropdown {
+  label: String
+  options: [AnswerDetailsOwnerDropdownOption!]!
+}
+
+type AnswerDetailsPersonMultiSelectOption {
+  value: String!
+}
+
+type AnswerDetailsPersonMultiSelect {
+  label: String
+  options: [AnswerDetailsPersonMultiSelectOption!]!
+}
+
+type AnswerDetailsCheckbox {
+  label: String
+}
+
+type AnswerDetailsAddress {
+  label: String
+}
+
+type AnswerDetailsFile {
+  label: String
+}
+
+type AnswerDetailsMultiSelectOption {
+  value: String!
+}
+
+type AnswerDetailsMultiSelect {
+  options: [AnswerDetailsMultiSelectOption!]!
+  label: String
+}
+
+type AnswerDetailsDataTableRow {
+  name: String!
+}
+
+type AnswerDetailsDataTableColumn {
+  name: String!
+  type: AnswerType!
+  placeholder: String
+}
+
+type AnswerDetailsDataTable {
+  rows: [AnswerDetailsDataTableRow!]!
+  columns: [AnswerDetailsDataTableColumn!]!
+  allowsAddMore: Boolean!
+  addMoreLabel: String
+  label: String
+}
+
+union AnswerDetailsUnion = AnswerDetailsAddress | AnswerDetailsCheckbox | AnswerDetailsDropdown | AnswerDetailsFile | AnswerDetailsSingleSelect | AnswerDetailsText | AnswerDetailsTextarea | AnswerDetailsDataTable | AnswerDetailsMultiSelect | AnswerDetailsOwnerDropdown | AnswerDetailsPersonMultiSelect
+
+type Answer {
+  id: ID!
+  step: Step! @belongsTo
+  type: AnswerType!
+  details: AnswerDetailsUnion @field(resolver: "App\\GraphQL\\Resolvers\\AnswerDetailsResolver")
+  conditions: [Condition!]! @hasMany
+  provided_answers(property_id: ID!, active_form_id: ID!): [ProvidedAnswer] @field(resolver: "App\\GraphQL\\Resolvers\\AnswerProvidedAnswerResolver")
+}
+
+type ProvidedAnswer {
+  id: ID!
+  active_form_id: ID!
+  answer: Answer! @belongsTo
+  value: Mixed
+}
+
+# @validator(class: "Form\\SaveProvidedAnswerInputValidator")
+input SaveProvidedAnswerInput @validator(class: "Form\\SaveProvidedAnswerInputValidator") {
+  answer_id: ID!
+  property_id: ID!
+  value: Mixed
+  active_form_id: ID!
+}
+
+# @validator(class: "Form\\SaveProvidedAnswersInputValidator")
+input SaveProvidedAnswersInput @validator(class: "Form\\SaveProvidedAnswersInputValidator") {
+  provided_answers: [SaveProvidedAnswerInput!]!
+  current_property_id: ID
+  current_step_id: ID
+}
+
+extend type Mutation {
+  saveProvidedAnswers(input: SaveProvidedAnswersInput! @spread): MyProgress! @field(resolver: "Form\\SaveProvidedAnswer") @can(ability: "saveProvidedAnswers", model: "Form")
+}

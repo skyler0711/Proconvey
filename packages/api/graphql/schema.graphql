@@ -1,0 +1,36 @@
+"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
+scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+
+scalar Mixed @scalar(class: "MLL\\GraphQLScalars\\MixedScalar")
+
+type Media {
+  id: ID!
+  url: String! @method(name: "getUrl")
+  name: String
+  custom_properties: Mixed
+}
+
+type PaymentIntent {
+  intent_id: String!
+  client_secret: String!
+}
+
+input UploadFileInput @validator {
+  key: String!
+  extension: String!
+}
+
+type Query {
+  health: Boolean! @field(resolver: "Health")
+}
+
+type Mutation
+
+#import auth.graphql
+#import address.graphql
+#import conveyancer.graphql
+#import media.graphql
+#import notifications.graphql
+#import property.graphql
+#import form.graphql
+#import global-search.graphql

@@ -1,0 +1,3 @@
+extend type Query {
+  media(id: ID! @eq): Media! @find(model: "Spatie\\MediaLibrary\\MediaCollections\\Models\\Media") @can(model: "Spatie\\MediaLibrary\\MediaCollections\\Models\\Media", ability: "view", resolved: true)
+}

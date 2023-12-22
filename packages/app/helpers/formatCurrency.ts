@@ -1,0 +1,11 @@
+const formatCurrency = (value: number) => {
+  return new Intl
+    .NumberFormat('en-GB', {
+      style: 'currency',
+      currency: 'GBP',
+    })
+    .format(value / 100)
+    .replace(/\.00$/, '')
+}
+
+export default formatCurrency

@@ -1,0 +1,2 @@
+json_key_file("~/google_key.json")
+package_name("uk.co.proconvey.mobile")

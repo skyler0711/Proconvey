@@ -1,0 +1,65 @@
+opt_out_usage
+setup_ci
+skip_docs
+
+default_platform(:android)
+
+desc 'Install Flutter and the Android SDK'
+lane :bootstrap do
+  flutter_bootstrap(
+    flutter_channel: '3.7.3'
+  )
+end
+
+desc 'Generate files and build the project'
+lane :build do
+  # Use the "internal" track so we don't backtrack version codes
+  build_numbers = google_play_track_version_codes(
+    track: 'internal'
+  )
+
+  last_build_number = build_numbers.max()
+
+  output_file = flutter_build(
+    build: 'appbundle',
+    build_number: last_build_number + 1,
+    build_args: [
+      '--release',
+      '--shrink',
+      '--dart-define=GRAPHQL_ENDPOINT=' + ENV.fetch('DEFINE_GRAPHQL_ENDPOINT')
+    ]
+  )
+
+  output_file = output_file.gsub(/\/android/, '')
+
+  output_file
+end
+
+desc 'Push to Play Store Internal Testing'
+lane :deploy do |options|
+  upload_to_play_store(
+    track: 'internal',
+    release_status: 'draft',
+    aab: options[:path],
+    # mapping: options[:mapping]
+  )
+end
+
+desc 'Build and deploy a full app'
+lane :build_and_deploy do
+  if is_ci?
+    bootstrap
+  end
+
+  aab_path = build
+  mapping_path = zip(
+    path: '../build/app/intermediates/merged_native_libs/release/out/lib',
+    output_path: 'symbols.zip',
+    verbose: true
+  )
+
+  deploy(
+    path: aab_path,
+    mapping: mapping_path
+  )
+end

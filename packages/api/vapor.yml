@@ -1,0 +1,22 @@
+id: 45938
+name: proconvey
+environments:
+  staging:
+    memory: 1024
+    cli-memory: 1024
+    timeout: 30
+    queue-timeout: 300
+    runtime: docker
+    database: proconvey-staging
+    storage: proconvey-staging-storage
+    cache: proconvey-staging
+    domain: 
+      - api-staging.proconvey.co.uk
+      - admin-staging.proconvey.co.uk
+    build:
+      - echo "$AUTH_JSON" >> auth.json
+      - COMPOSER_MIRROR_PATH_REPOS=1 composer install --no-dev
+      - php artisan optimize
+    deploy:
+      - php artisan migrate --force
+      - php artisan lighthouse:cache

@@ -1,0 +1,9 @@
+.placeholder_tag {
+  background-color: #E9E4EE;
+  padding: 0.25rem 0.375rem;
+  border-radius: 0.25rem;
+}
+
+.tox .tox-toolbar__group:first-child .tox-tbtn--select .tox-tbtn__select-label {
+  color: #BF4A8E !important;
+}

@@ -1,0 +1,26 @@
+type Notification {
+  id: ID!
+  type: String!
+  notifiable_type: String!
+  notifiable_id: Int!
+  data: NotificationData
+  read_at: DateTime
+  created_at: DateTime!
+}
+
+type NotificationData {
+  type: String
+  id: Int
+  message: String
+}
+
+input UpdateNotificationPreferencesInput {
+  getting_started_forms_completed: Boolean!
+  onboarding_completed: Boolean!
+  client_new_document_uploads: Boolean! 
+}
+
+extend type Mutation {
+  markAllNotificationsRead: User @can(ability: "markNotificationsRead") @field(resolver: "Notifications\\MarkAllNotificationsRead")
+  updateUserNotificationPreferences(input: UpdateNotificationPreferencesInput! @spread): User! @can(ability: "updateNotificationPreferences") @field(resolver: "Notifications\\UpdateUserNotificationPreferences")  
+}

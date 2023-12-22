@@ -1,0 +1,146 @@
+type Property {
+  id: ID!
+  case_reference: String!
+  address: Address!
+  type: PropertyType!
+  users: [User!]!
+  sale_price: Int
+  conveyancing_fee: Int
+  fee_earner_id: ID
+  conveyancer: Conveyancer!
+  letters_required: Boolean!
+  id_check_required: Boolean!
+  my_progress: MyProgress @field(resolver: "App\\GraphQL\\Queries\\Property\\MyProgress")
+  archived_at: DateTime
+  documents: [Media!]! @with(relation: "media")
+  all_documents_link: String @field(resolver: "App\\GraphQL\\Queries\\AllDocumentsLink")
+  active_forms: [Form!]! @field(resolver: "App\\GraphQL\\Queries\\Property\\ActiveForms")
+}
+
+type PropertyUserPivot {
+  role: PropertyUserRole!
+  onboarding_forms_completed_at: DateTime
+  payment_on_account_completed_at: DateTime
+  id_verification_completed_at: DateTime
+  is_primary_user: Boolean!
+  sof_completed_at: DateTime
+  representation: String
+}
+
+type ActiveFormsPivot {
+  id: ID!
+  title: String
+}
+
+input InviteNewClientInput @validator(class: "Conveyancer\\InviteNewClientInputValidator") {
+  case_reference: String!
+  email: String!
+  first_name: String!
+  last_name: String!
+  address: CreateInviteAddressInput!
+  type: String!
+  sale_price: String
+  conveyancing_fee: String
+  type: String!
+  fee_earner_id: ID
+  letters_required: Boolean
+  id_check_required: Boolean
+  payment_required: Boolean
+  payment_amount: Int
+  sof_check_required: Boolean
+}
+
+input SendInviteInput {
+  user_id: ID!
+  property_id: ID!
+}
+
+type OnboardingLettersProgress {
+  required: Boolean!
+  completed: Boolean
+}
+
+type PaymentProgress {
+  required: Boolean!
+  paid: Boolean
+}
+
+type IdvProgress {
+  required: Boolean!
+  completed: Boolean
+  mobile_connected: Boolean!
+}
+
+type SofProgress {
+  required: Boolean!
+  completed: Boolean
+  files: [Media!]
+}
+
+type GiftorDepositDeclarationProgress {
+  required: Boolean!
+  completed: Boolean
+}
+
+type MyProgress {
+  provided_answers: [ProvidedAnswer!]!
+  onboarding_letters: OnboardingLettersProgress!
+  idv: IdvProgress!
+  payment: PaymentProgress!
+  sof: SofProgress!
+  forms: [Form!]!
+  pack_progress: PackProgress!
+  giftor_deposit_declaration: GiftorDepositDeclarationProgress!
+}
+
+type PackProgress {
+  completed: Boolean!
+}
+
+input PropertyFilterInputs {
+  search: String
+  filter_option: String
+}
+
+input UploadAdditionalDocumentsInput @validator(class: "UploadAdditionalDocumentsInputValidator") {
+  name: String!
+  uploaded_document: UploadFileInput
+}
+
+input ReuploadAdditionalDocumentsInput @validator(class: "ReuploadAdditionalDocumentsInputValidator") {
+  file_id: ID!
+  name: String!
+  uploaded_document: UploadFileInput
+}
+
+input UploadSofCheckDocumentsInput @validator(class: "UploadSofCheckDocumentsInputValidator") {
+  documents: [UploadFileInput!]!
+}
+
+input SearchAddress {
+  address: String!
+}
+
+extend type Query {
+  property(id: ID! @eq): Property! @find @can(ability: "view", resolved: true)
+  properties(filters: PropertyFilterInputs @spread): [Property!]! @paginate(builder: "App\\GraphQL\\Builders\\PropertiesBuilder") @can(ability: "viewAny", resolved: true)
+  getClientProperties: [Property!]! @paginate(builder: "App\\GraphQL\\Builders\\GetClientPropertiesBuilder") @can(ability: "viewAny", resolved: true)
+  getAddressFromOS2API(input: SearchAddress! @spread): InviteAddress! @field(resolver: "App\\GraphQL\\Queries\\GetAddressFromOS2API")
+  step(id: ID! @eq): Step! @find @can(ability: "view", resolved: true)
+}
+
+extend type Mutation {
+  inviteNewClient(input: InviteNewClientInput! @spread): Property! @field(resolver: "Client\\InviteNewClient")
+  sendInvite(input: SendInviteInput!): User! @field(resolver: "Client\\SendInvite") @can(ability: inviteClient, model: "Property", injectArgs: input)
+  createLettersSigningUrl(property_id: ID!): String @field(resolver: "PropertyPack\\CreateLettersSigningUrl")
+  createFormSigningUrl(property_id: ID!, form_id: ID!): String @field(resolver: "PropertyPack\\CreateFormSigningUrl")
+  createGiftorDeclarationSigningUrl(property_id: ID!): String @field(resolver: "PropertyPack\\CreateGiftorDeclarationSigningUrl")
+  createPaymentOnAccountPaymentIntent(property_id: ID!): String @field(resolver: "PropertyPack\\CreatePaymentOnAccountPaymentIntent")
+  createIdvQrCode(property_id: ID!): String @field(resolver: "PropertyPack\\CreateIdvQrCode")
+  idvMobileConnected(session_id: ID!, reset: Boolean!): Boolean @field(resolver: "PropertyPack\\IdvMobileConnected") # No policy since this should be public
+  archiveProperty(id: ID!): Property! @field(resolver: "Client\\ArchiveProperty") @can(ability: "archiveThisProperty", injectArgs: id)
+  uploadAdditionalDocuments(property_id: ID!, input: UploadAdditionalDocumentsInput!): Media! @field(resolver: "PropertyPack\\UploadAdditionalDocuments") @can(ability: "uploadAdditionalDocuments", model: "Property", injectArgs: property_id)
+  reuploadAdditionalDocuments(property_id: ID!, input: ReuploadAdditionalDocumentsInput!): Media! @field(resolver: "PropertyPack\\ReuploadAdditionalDocuments") @can(ability: "uploadAdditionalDocuments", model: "Property", injectArgs: "property_id, file_id")
+  uploadSofCheckDocuments(property_id: ID!, input: UploadSofCheckDocumentsInput!): [Media!]! @field(resolver: "PropertyPack\\UploadSofCheckDocuments") @can(ability: "uploadSofCheckDocuments", model: "Property", injectArgs: property_id)
+  deleteMortgage(step_id: ID!, property_id: ID!, charge_index: ID!): Boolean @field(resolver: "Client\\DeleteMortgage") @can(ability: "deleteMortgage", model: "providedAnswer", injectArgs: id)
+}

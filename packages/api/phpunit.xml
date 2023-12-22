@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd" bootstrap="vendor/autoload.php" colors="true">
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Graphql">
+            <directory suffix="Test.php">./tests/Graphql</directory>
+        </testsuite>
+    </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+        <report>
+            <html outputDirectory="coverage/html" />
+            <clover outputFile="coverage/clover.xml"/>
+        </report>
+    </coverage>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+
+        <!-- Prevent calling to Stripe during tests -->
+        <env name="STRIPE_PUBLISHABLE_KEY" value="test"/>
+        <env name="STRIPE_SECRET_KEY" value="test"/>
+        <env name="STRIPE_CLIENT_ID" value="test"/>
+        <env name="STRIPE_WEBHOOK_SECRET" value="test"/>
+        <env name="STRIPE_PRICE_ID_CONVEYANCER_PLAN" value="test"/>
+    </php>
+</phpunit>
